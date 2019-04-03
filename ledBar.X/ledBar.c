@@ -1,17 +1,19 @@
 /*
  * File:   ledBar.c
- * Author: macbookair
+ * Author: theWig
  *
  * Created on March 24, 2019, 9:58 PM
  */
 
-// Left
-// 
-// Btn is preventing ledbar from continuing
-// Int0 is not getting internal pull up resistor
-// 
 
-
+/**
+ * Left
+ * =====================================================
+ * Restructuring code
+ * pseudo oop
+ * Just added the structs, no implementation change
+ * =====================================================
+ * */
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
