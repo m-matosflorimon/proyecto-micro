@@ -12,8 +12,8 @@
  * Code restructured
  * Se puede jugar
  * Agregar puntuacion e intentos
- * Agregar configuracion desde el dip sw // TEST
  * Agregar random
+ * Agregar LCD
  * =====================================================
  * */
 
@@ -42,6 +42,8 @@
 #define ctrl3 PIND6
 #define ctrl4 PIND7 // Game Type
 
+#define testIt PORTB |= (1<<PB5)
+
 // LEDBAR
 #define ledBar PORTB
 #define _ledBar DDRB
@@ -52,12 +54,31 @@
 #define lcd PORTC
 #define _lcd DDRC
 
+// Serial
+// #define FOSC 16000000 // Clock Speed 
+// #define BAUD 9600
+// #define MYUBRR FOSC/16/BAUD-1
+// #define upperLBound 65
+// #define upperUBound 90
+// #define lowerLBound 97
+// #define lowerUBound 122
+// #define constant 32
+// #define BAUDconstant 103
+// #define bufferSize 10
+// #define bufferLimit bufferSize-1
+// #define bufferFirst 0
+// #define rxSentinel '0'
+
 // GLOBAL VARs
 // char leds = 0;
 // char gameStatus = 'F';
 
 // Game
 struct game game1;
+
+// Serial
+// unsigned char buffer[bufferSize];
+// int bufferPointer = -1;
 
 
 // Structs
@@ -153,6 +174,7 @@ struct game{
     char chances;
     char score;
     char toWin;
+    char winScore;
     struct bar gameBar;
     struct button gameButton;
     struct music gameMusic;
@@ -171,6 +193,17 @@ void gameSet();
 char pressed();
 char ledInc();
 char won();
+char loseShot();
+void controlSet();
+void gameReset();
+
+// Serial prototypes
+// int addToBuffer(unsigned char value);
+// unsigned char takeFromBuffer();
+// void USART_Transmit(unsigned char data);
+// void USART_Init(); 
+// void USART_String_Transmit(char arr_Char[]);
+// void char_tx (unsigned char character);
 
 
 void setup(){
@@ -208,8 +241,17 @@ void setup(){
     sei();
 
     // Initial setup
-    gameSet();
+    game1.toWin = 8;
+    struct control gc;
+    game1.gameControl = gc;
+    game1.winScore = 10;
+    struct button bt;
+    game1.gameButton = bt;
+    struct bar br;
+    game1.gameBar = br;
+    game1.gameBar.length = 10;
     
+    gameSet();
 }
 
 
@@ -240,30 +282,23 @@ char ledInc(){
     return 0;
 }
 
+// Inicia un nuevo juego
 void gameSet(){
-    game1.state = set;
-    game1.chances = 10;
+    controlSet();
+    game1.chances = 25 - (game1.gameControl.type * 14) - game1.winScore;
     game1.score = 0;
-    game1.toWin = 8;
-    struct control gc;
-    game1.gameControl = gc;
-    game1.gameControl.level = easy;
-    game1.gameControl.type = practice;
-    struct button bt;
-    game1.gameButton = bt;
-    game1.gameButton.status = reset;
-    game1.gameButton.enable = enabled;
-    struct bar br;
-    game1.gameBar = br;
-    game1.gameBar.length = 10;
-    game1.gameBar.leds = 0;
     game1.player = loser;
- 
-    ledBar = game1.gameBar.leds;
-    greenOff;
-    redOff;
+    gameReset();
 }
 
+// Reinicia el juego para la proxima oportunidad
+void gameReset(){
+    game1.state = set;
+    game1.gameButton.status = reset;
+    game1.gameButton.enable = enabled;
+    game1.gameBar.leds = 0;
+    ledBar = game1.gameBar.leds;
+}
 
 // Carga un valor al ledTimer 
 // CTC 
@@ -288,23 +323,62 @@ void ledTimer(){
 // Chequea si atino o no
 // @return 1 si atino 0 si fallo
 char winShot(){
-    // if(game1.gameBar.leds == game1.toWin)
-    //     return 1;
-    // return 0;
     return game1.gameBar.leds == game1.toWin;
+}
+
+// Chequea si le quedan oportunidades al jugador
+// Retorna 1 si ya no le quedan oportunidades 0 si aun le quedan
+char loseShot(){
+    return game1.chances == 0;
 }
 
 // Chequea si ya gano o si le faltan intentos
 // @return 0 si le faltan intentos 1 si ya gano
 char won(){
     game1.score++;
-    if(game1.score == game1.chances){
+    if(game1.score == game1.winScore){
         game1.player = winner;
         return 1;
     }
     return 0;
 }
 
+void controlSet(){
+    char sw = ctrl & (~((0<<ctrl3)|(0<<ctrl2)|(0<<ctrl1))); // dificultad
+    if( sw == 0 ||  sw == 1 || sw == 3 || sw == 7 ){
+        game1.gameControl.level = sw;
+    }
+    game1.gameControl.type = (ctrl & (~(0<<ctrl4))>>ctrl3); // tipo practica o juego
+}
+
+// // Serial functions
+// // Transmits char to USART
+// void USART_Transmit(unsigned char data) {
+
+// /* Wait for empty transmit buffer */ 
+//     while (!(UCSR0A & (1<<UDRE0)))
+//         ;
+// /* Put data into buffer, sends the data */ 
+//                     UDR0 = data;       
+// }
+
+// // void USART_String_Transmit(char arr_Char[]){
+// //     int ptr_idx = 0;
+// // 	while(arr_Char[ptr_idx] != 0){
+// // 		char_tx(arr_Char[ptr_idx]);
+// // 		ptr_idx++;
+// // 	}
+// // 	char_tx(13);
+// // 	char_tx(10);
+// // }
+
+// void USART_Init() {
+//     /*Set baud rate */
+//         UBRR0 = BAUDconstant;
+//         UCSR0B = (1<<RXCIE0)|(1<<RXEN0)|(1<<TXEN0)|(0<<UCSZ02);
+//         UCSR0C = (0<<USBS0)|(1<<UCSZ01)|(1<<UCSZ00);
+// //        USART_Transmit('!');
+// }
 
 // =====================================================
 // INTERRUPCIONES
@@ -325,12 +399,23 @@ ISR(TIMER1_COMPA_vect){
             greenOn;
             if( won() ){}
                 // revisar exactamente como se gana/pierde
-        }else {
-            redOn;
+        }else if( loseShot() ){
+            
+            while(1){
+                redOn;
+                _delay_ms(1000);
+                redOff;
+                _delay_ms(1000);
+            }
             game1.score = 0;
+            game1.player = loser;
+        }else{
+            game1.chances--;
+            redOn;
+            gameReset();   
         }   
     }else{
-        gameSet();
+        gameReset();
     }
 }
 
@@ -342,6 +427,8 @@ ISR(INT0_vect){
     if(b == start){
         game1.gameBar.leds = 0;
         game1.state = inGame;
+        greenOff;
+        redOff;
     }else if(b == shoot){
         game1.state = gameover;
     }else if(b == reset){
@@ -349,26 +436,13 @@ ISR(INT0_vect){
     }
 
     // debounce
-    _delay_ms(150);                  
+    _delay_ms(200);                  
 }
 
 // PCINT2 interrupt
 // Dip Sw. Setea la difficultad y el modo del juego.
 ISR(PCINT2_vect){
-
-    char sw = ctrl & (~((0<<ctrl3)|(0<<ctrl2)|(0<<ctrl1))); // tipo practica o juego
-
-    switch(sw){
-        case 0:
-        case 1:
-        case 3:
-        case 7:
-            game1.gameControl.level = sw;
-            break;
-        default:
-            break; // Not valid
-    }
-    game1.gameControl.type = (ctrl & (~(0<<ctrl4))>>ctrl3);
+    gameSet();
 }
 
 // =====================================================
@@ -377,6 +451,9 @@ ISR(PCINT2_vect){
 int main(void) {
     /* Replace with your application code */
     setup();
+    // USART_Init();
+    // _delay_ms(1000);
+    // USART_String_Transmit("Hola");
     while (1) {
     }
 }
