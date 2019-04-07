@@ -9,9 +9,11 @@
 /**
  * Left
  * =====================================================
- * Restructuring code
- * pseudo oop
- * Just added the structs, no implementation change
+ * Code restructured
+ * Se puede jugar
+ * Agregar puntuacion e intentos
+ * Agregar configuracion desde el dip sw // TEST
+ * Agregar random
  * =====================================================
  * */
 
@@ -28,12 +30,17 @@
 #define _indicators DDRD
 #define redLed PORTD0
 #define greenLed PORTD1
-#define btn PORTD2
+#define greenOff indicators |= (1<<greenLed)
+#define greenOn indicators &= ~(1<<greenLed)
+#define redOff indicators |= (1<<redLed)   
+#define redOn indicators &= ~(1<<redLed)
+#define btn PIND2
 #define buzzer PORTD3
-#define ctrl1 PORTD4
-#define ctrl2 PORTD5
-#define ctrl3 PORTD6
-#define ctrl4 PORTD7
+#define ctrl PIND
+#define ctrl1 PIND4
+#define ctrl2 PIND5
+#define ctrl3 PIND6
+#define ctrl4 PIND7 // Game Type
 
 // LEDBAR
 #define ledBar PORTB
@@ -46,8 +53,11 @@
 #define _lcd DDRC
 
 // GLOBAL VARs
-char leds = 0;
-char gameStatus = 'F';
+// char leds = 0;
+// char gameStatus = 'F';
+
+// Game
+struct game game1;
 
 
 // Structs
@@ -78,10 +88,10 @@ enum buttonEnable{
 };
 
 struct button{
-    // If start or shoot
+    // If start, shoot or reset
     enum buttonEnum status;
 
-    // Is it enabled
+    // If enabled or disabled
     enum buttonEnable enable;
 };
 
@@ -106,7 +116,8 @@ struct music{
 enum controlLevel{
     easy,
     medium,
-    hard
+    hard,
+    veryHard
 };
 
 enum controlType{
@@ -131,10 +142,17 @@ enum gameState{
     gameover
 };
 
+enum gamer{
+    loser,
+    winner
+};
+
 struct game{
     enum gameState state;
+    enum gamer player; 
     char chances;
     char score;
+    char toWin;
     struct bar gameBar;
     struct button gameButton;
     struct music gameMusic;
@@ -148,17 +166,18 @@ void ledTimer();
 void ledTimerLoad( int timerVal );
 void ledTimerStop();
 void ledTimerStart();
-void shotCheck();
-
+char winShot();
+void gameSet();
+char pressed();
+char ledInc();
+char won();
 
 
 void setup(){
     
     // LED | BTN | BUZZER | CTRL
     _indicators = (1<<redLed)|(1<<greenLed)|(0<<btn)|(1<<buzzer)|(0<<ctrl1)|(0<<ctrl2)|(0<<ctrl3)|(0<<ctrl4);
-    // _indicators |= (0<<ctrl1)|(0<<ctrl2)|(0<<ctrl3)|(0<<ctrl4);
-    indicators = (0<<redLed)|(0<<greenLed)|(1<<btn)|(0<<buzzer)|(1<<ctrl1)|(1<<ctrl2)|(1<<ctrl3)|(1<<ctrl4);
-    // indicators |= (1<<ctrl1)|(1<<ctrl2)|(1<<ctrl3)|(1<<ctrl4);
+    indicators = (1<<redLed)|(1<<greenLed)|(1<<btn)|(0<<buzzer)|(1<<ctrl1)|(1<<ctrl2)|(1<<ctrl3)|(1<<ctrl4);
 
     // LEDBAR
     // _ledBar &= (1<<PORTB0)|(1<<PORTB1)|(1<<PORTB2)|(1<<PORTB3);
@@ -177,6 +196,10 @@ void setup(){
     // BTN INTERRUPT
     EICRA |= (0<<ISC01)|(0<<ISC00);
     EIMSK |= (0<<INT1)|(1<<INT0);
+
+    // DIP SW INTERRUPT
+    PCICR = (1<<PCIE2);
+    PCMSK2 = (1<<PCINT23)|(1<<PCINT22)|(1<<PCINT21)|(1<<PCINT20);
     
     // LEDBAR TIMER
     ledTimer();
@@ -184,9 +207,63 @@ void setup(){
     // Global Interrupt
     sei();
 
-    // Game
-    struct game game1;
+    // Initial setup
+    gameSet();
+    
 }
+
+
+
+// =====================================================
+// METODOS
+// =====================================================
+
+// Cambia el estado del boton al ser presionado
+char pressed(){
+    if( game1.gameButton.enable == enabled ){
+        if( game1.gameButton.status != reset ){
+            game1.gameButton.status++;
+        }else{
+            game1.gameButton.status = start;
+        }
+        return game1.gameButton.status;
+    }
+    return 4;
+}
+
+// Incrementa la barra de leds. Si pudo incrementar retorna 1; de lo contrario retorna 0.
+char ledInc(){
+    if(game1.gameBar.leds < (game1.gameBar.length - 1)){
+        game1.gameBar.leds++;
+        return 1;
+    }
+    return 0;
+}
+
+void gameSet(){
+    game1.state = set;
+    game1.chances = 10;
+    game1.score = 0;
+    game1.toWin = 8;
+    struct control gc;
+    game1.gameControl = gc;
+    game1.gameControl.level = easy;
+    game1.gameControl.type = practice;
+    struct button bt;
+    game1.gameButton = bt;
+    game1.gameButton.status = reset;
+    game1.gameButton.enable = enabled;
+    struct bar br;
+    game1.gameBar = br;
+    game1.gameBar.length = 10;
+    game1.gameBar.leds = 0;
+    game1.player = loser;
+ 
+    ledBar = game1.gameBar.leds;
+    greenOff;
+    redOff;
+}
+
 
 // Carga un valor al ledTimer 
 // CTC 
@@ -209,29 +286,94 @@ void ledTimer(){
 }
 
 // Chequea si atino o no
-void shotCheck(){
-    leds = 0;
+// @return 1 si atino 0 si fallo
+char winShot(){
+    // if(game1.gameBar.leds == game1.toWin)
+    //     return 1;
+    // return 0;
+    return game1.gameBar.leds == game1.toWin;
 }
 
-// Interrupciones
+// Chequea si ya gano o si le faltan intentos
+// @return 0 si le faltan intentos 1 si ya gano
+char won(){
+    game1.score++;
+    if(game1.score == game1.chances){
+        game1.player = winner;
+        return 1;
+    }
+    return 0;
+}
+
+
+// =====================================================
+// INTERRUPCIONES
+// =====================================================
+// Timer1 interrupt
+// Game timer. Se encarga de llevar el juego en si.
 ISR(TIMER1_COMPA_vect){
-    if(gameStatus == 'T'){
-        if( leds >= 10 )
-            shotCheck();
-        ledBar = leds++;
+
+    if(game1.state == inGame){
+        if(ledInc()){
+            ledBar = game1.gameBar.leds;
+        }else{
+            game1.state = gameover;
+            game1.gameButton.status = shoot;
+        }
+    }else if(game1.state == gameover){
+        if(winShot()){
+            greenOn;
+            if( won() ){}
+                // revisar exactamente como se gana/pierde
+        }else {
+            redOn;
+            game1.score = 0;
+        }   
+    }else{
+        gameSet();
     }
 }
 
+// Int0 interrupt
+// Btn. Inicia, dispara y resetea el juego.
 ISR(INT0_vect){
-    if( gameStatus == 'F'){ //First time. Game start.
-        gameStatus = 'T';
-    }else{ //Second time. Game stop.
-        gameStatus = 'F';
-        shotCheck();
+
+    char b = pressed();
+    if(b == start){
+        game1.gameBar.leds = 0;
+        game1.state = inGame;
+    }else if(b == shoot){
+        game1.state = gameover;
+    }else if(b == reset){
+        game1.state = set;
     }
-    _delay_ms(300);                  
+
+    // debounce
+    _delay_ms(150);                  
 }
 
+// PCINT2 interrupt
+// Dip Sw. Setea la difficultad y el modo del juego.
+ISR(PCINT2_vect){
+
+    char sw = ctrl & (~((0<<ctrl3)|(0<<ctrl2)|(0<<ctrl1))); // tipo practica o juego
+
+    switch(sw){
+        case 0:
+        case 1:
+        case 3:
+        case 7:
+            game1.gameControl.level = sw;
+            break;
+        default:
+            break; // Not valid
+    }
+    game1.gameControl.type = (ctrl & (~(0<<ctrl4))>>ctrl3);
+}
+
+// =====================================================
+// APP
+// =====================================================
 int main(void) {
     /* Replace with your application code */
     setup();
