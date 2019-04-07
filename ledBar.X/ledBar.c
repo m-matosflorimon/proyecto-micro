@@ -54,32 +54,10 @@
 #define lcd PORTC
 #define _lcd DDRC
 
-// Serial
-// #define FOSC 16000000 // Clock Speed 
-// #define BAUD 9600
-// #define MYUBRR FOSC/16/BAUD-1
-// #define upperLBound 65
-// #define upperUBound 90
-// #define lowerLBound 97
-// #define lowerUBound 122
-// #define constant 32
-// #define BAUDconstant 103
-// #define bufferSize 10
-// #define bufferLimit bufferSize-1
-// #define bufferFirst 0
-// #define rxSentinel '0'
-
 // GLOBAL VARs
-// char leds = 0;
-// char gameStatus = 'F';
 
 // Game
 struct game game1;
-
-// Serial
-// unsigned char buffer[bufferSize];
-// int bufferPointer = -1;
-
 
 // Structs
 
@@ -197,15 +175,6 @@ char loseShot();
 void controlSet();
 void gameReset();
 
-// Serial prototypes
-// int addToBuffer(unsigned char value);
-// unsigned char takeFromBuffer();
-// void USART_Transmit(unsigned char data);
-// void USART_Init(); 
-// void USART_String_Transmit(char arr_Char[]);
-// void char_tx (unsigned char character);
-
-
 void setup(){
     
     // LED | BTN | BUZZER | CTRL
@@ -213,10 +182,6 @@ void setup(){
     indicators = (1<<redLed)|(1<<greenLed)|(1<<btn)|(0<<buzzer)|(1<<ctrl1)|(1<<ctrl2)|(1<<ctrl3)|(1<<ctrl4);
 
     // LEDBAR
-    // _ledBar &= (1<<PORTB0)|(1<<PORTB1)|(1<<PORTB2)|(1<<PORTB3);
-    // _ledBar |= (0<<PORTB4)|(0<<PORTB5); //Available
-    // ledBar &= (0<<PORTB0)|(0<<PORTB1)|(0<<PORTB2)|(0<<PORTB3);
-    // ledBar |= (1<<PORTB4)|(1<<PORTB5); //Available
     _ledBar = 0xFF;
     ledBar = 0x00;
 
@@ -351,35 +316,6 @@ void controlSet(){
     game1.gameControl.type = (ctrl & (~(0<<ctrl4))>>ctrl3); // tipo practica o juego
 }
 
-// // Serial functions
-// // Transmits char to USART
-// void USART_Transmit(unsigned char data) {
-
-// /* Wait for empty transmit buffer */ 
-//     while (!(UCSR0A & (1<<UDRE0)))
-//         ;
-// /* Put data into buffer, sends the data */ 
-//                     UDR0 = data;       
-// }
-
-// // void USART_String_Transmit(char arr_Char[]){
-// //     int ptr_idx = 0;
-// // 	while(arr_Char[ptr_idx] != 0){
-// // 		char_tx(arr_Char[ptr_idx]);
-// // 		ptr_idx++;
-// // 	}
-// // 	char_tx(13);
-// // 	char_tx(10);
-// // }
-
-// void USART_Init() {
-//     /*Set baud rate */
-//         UBRR0 = BAUDconstant;
-//         UCSR0B = (1<<RXCIE0)|(1<<RXEN0)|(1<<TXEN0)|(0<<UCSZ02);
-//         UCSR0C = (0<<USBS0)|(1<<UCSZ01)|(1<<UCSZ00);
-// //        USART_Transmit('!');
-// }
-
 // =====================================================
 // INTERRUPCIONES
 // =====================================================
@@ -451,9 +387,6 @@ ISR(PCINT2_vect){
 int main(void) {
     /* Replace with your application code */
     setup();
-    // USART_Init();
-    // _delay_ms(1000);
-    // USART_String_Transmit("Hola");
     while (1) {
     }
 }
