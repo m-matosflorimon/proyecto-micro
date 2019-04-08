@@ -13,7 +13,7 @@
  * Se puede jugar
  * Agregar puntuacion e intentos
  * Agregar random
- * Agregar LCD
+ * Agregar LCD // lista en otro archivo (lcd.c)
  * =====================================================
  * */
 
@@ -47,6 +47,7 @@
 // LEDBAR
 #define ledBar PORTB
 #define _ledBar DDRB
+#define _ledBar_ PINB
 
 // LCD ****to change in setup
 #define RS PORTC4
