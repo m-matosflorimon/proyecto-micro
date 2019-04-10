@@ -495,6 +495,7 @@ void ledTimer()
 // Timer2
 void buzzTimerLoad(int timerVal)
 {
+    OCR2A = timerVal+1;
     OCR2B = timerVal;
 }
 
@@ -506,7 +507,7 @@ void buzzTimer()
 {
     TCCR2A = (0 << COM2A1) | (0 << COM2A0) | (0 << COM2B1) | (1 << COM2B0) | (1 << WGM21) | (0 << WGM20);
     TCCR2B = (0 << WGM22) | (0 << CS22) | (0 << CS21) | (1 << CS20);
-    TIMSK2 = (1 << OCIE2B);
+    // TIMSK2 = (1 << OCIE2B);
     buzzTimerLoad(255);
 }
 
@@ -527,7 +528,7 @@ void periodTimer()
 {
     TCCR0A = (0 << COM0A1) | (0 << COM0A0) | (0 << COM0B1) | (0 << COM0B0) | (1 << WGM01) | (0 << WGM00);
     TCCR0B = (0 << WGM02) | (0 << CS02) | (1 << CS01) | (1 << CS00);
-    TIMSK0 = (1 << OCIE0B);
+    // TIMSK0 = (1 << OCIE0B);
     periodTimerLoad(250);
 }
 
@@ -733,9 +734,9 @@ int main(void)
 {
     setup();
 
-    // for(char i = 255; i>0 ; i--){
-    //     buzzTimerLoad(i);
-    // }
+    for(char i = 255; i>0 ; i--){
+        buzzTimerLoad(i);
+    }
     lcdInitialiser4();
     lcdCursor(0, 0);
     lcdPrint("Mushroom");

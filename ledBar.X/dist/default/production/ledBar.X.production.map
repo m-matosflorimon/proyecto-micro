@@ -22,12 +22,10 @@ Discarded input sections
  .text.random   0x0000000000000000       0x10 build/default/production/ledBar.o
  .text.ledTimerLoad
                 0x0000000000000000        0xa build/default/production/ledBar.o
- .text.buzzTimerLoad
-                0x0000000000000000        0x6 build/default/production/ledBar.o
  .text.periodTimerLoad
                 0x0000000000000000        0x4 build/default/production/ledBar.o
  .text.periodTimer
-                0x0000000000000000       0x14 build/default/production/ledBar.o
+                0x0000000000000000        0xe build/default/production/ledBar.o
  .text.lcdCursor
                 0x0000000000000000       0x14 build/default/production/ledBar.o
  .text          0x0000000000000000        0x0 /Applications/microchip/xc8/v2.05/avr/bin/../lib/gcc/avr/5.4.0/avr5/memx-const/libgcc.a(_exit.o)
@@ -362,20 +360,20 @@ END GROUP
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x0000000000000000     0x1aef
+.debug_info     0x0000000000000000     0x1af6
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x0000000000000000      0x5f4 /Applications/microchip/xc8/v2.05/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5/memx-const/crtatmega328p.o
- .debug_info    0x00000000000005f4     0x14fb build/default/production/ledBar.o
+ .debug_info    0x00000000000005f4     0x1502 build/default/production/ledBar.o
 
-.debug_abbrev   0x0000000000000000      0x848
+.debug_abbrev   0x0000000000000000      0x862
  *(.debug_abbrev)
  .debug_abbrev  0x0000000000000000      0x5a2 /Applications/microchip/xc8/v2.05/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5/memx-const/crtatmega328p.o
- .debug_abbrev  0x00000000000005a2      0x2a6 build/default/production/ledBar.o
+ .debug_abbrev  0x00000000000005a2      0x2c0 build/default/production/ledBar.o
 
-.debug_line     0x0000000000000000      0x879
+.debug_line     0x0000000000000000      0x885
  *(.debug_line .debug_line.* .debug_line_end)
  .debug_line    0x0000000000000000       0x1a /Applications/microchip/xc8/v2.05/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5/memx-const/crtatmega328p.o
- .debug_line    0x000000000000001a      0x85f build/default/production/ledBar.o
+ .debug_line    0x000000000000001a      0x86b build/default/production/ledBar.o
 
 .debug_frame    0x0000000000000000      0x348
  *(.debug_frame)
@@ -386,9 +384,9 @@ END GROUP
  .debug_str     0x0000000000000000      0x208 /Applications/microchip/xc8/v2.05/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5/memx-const/crtatmega328p.o
  .debug_str     0x0000000000000208        0x9 build/default/production/ledBar.o
 
-.debug_loc      0x0000000000000000      0x6d2
+.debug_loc      0x0000000000000000      0x6d7
  *(.debug_loc)
- .debug_loc     0x0000000000000000      0x6d2 build/default/production/ledBar.o
+ .debug_loc     0x0000000000000000      0x6d7 build/default/production/ledBar.o
 
 .debug_macinfo
  *(.debug_macinfo)
@@ -418,58 +416,58 @@ OUTPUT(dist/default/production/ledBar.X.production.elf elf32-avr)
 LOAD linker stubs
 LOAD data_init
 
-.text           0x0000000000000828        0x4
- .text          0x0000000000000828        0x4 /Applications/microchip/xc8/v2.05/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5/memx-const/crtatmega328p.o
-                0x0000000000000828                __vector_20
-                0x0000000000000828                __vector_24
-                0x0000000000000828                __vector_12
-                0x0000000000000828                __bad_interrupt
-                0x0000000000000828                __vector_6
-                0x0000000000000828                __vector_3
-                0x0000000000000828                __vector_23
-                0x0000000000000828                __vector_25
-                0x0000000000000828                __vector_13
-                0x0000000000000828                __vector_17
-                0x0000000000000828                __vector_19
-                0x0000000000000828                __vector_7
-                0x0000000000000828                __vector_4
-                0x0000000000000828                __vector_9
-                0x0000000000000828                __vector_2
-                0x0000000000000828                __vector_21
-                0x0000000000000828                __vector_15
-                0x0000000000000828                __vector_8
-                0x0000000000000828                __vector_14
-                0x0000000000000828                __vector_10
-                0x0000000000000828                __vector_16
-                0x0000000000000828                __vector_18
-                0x0000000000000828                __vector_22
+.text           0x0000000000000840        0x4
+ .text          0x0000000000000840        0x4 /Applications/microchip/xc8/v2.05/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5/memx-const/crtatmega328p.o
+                0x0000000000000840                __vector_20
+                0x0000000000000840                __vector_24
+                0x0000000000000840                __vector_12
+                0x0000000000000840                __bad_interrupt
+                0x0000000000000840                __vector_6
+                0x0000000000000840                __vector_3
+                0x0000000000000840                __vector_23
+                0x0000000000000840                __vector_25
+                0x0000000000000840                __vector_13
+                0x0000000000000840                __vector_17
+                0x0000000000000840                __vector_19
+                0x0000000000000840                __vector_7
+                0x0000000000000840                __vector_4
+                0x0000000000000840                __vector_9
+                0x0000000000000840                __vector_2
+                0x0000000000000840                __vector_21
+                0x0000000000000840                __vector_15
+                0x0000000000000840                __vector_8
+                0x0000000000000840                __vector_14
+                0x0000000000000840                __vector_10
+                0x0000000000000840                __vector_16
+                0x0000000000000840                __vector_18
+                0x0000000000000840                __vector_22
 
 .note.gnu.avr.deviceinfo
                 0x0000000000000000       0x40
  .note.gnu.avr.deviceinfo
                 0x0000000000000000       0x40 /Applications/microchip/xc8/v2.05/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5/memx-const/crtatmega328p.o
 
-.text.pressed   0x00000000000006e6       0x26
- .text.pressed  0x00000000000006e6       0x26 build/default/production/ledBar.o
-                0x00000000000006e6                pressed
+.text.pressed   0x00000000000006f4       0x26
+ .text.pressed  0x00000000000006f4       0x26 build/default/production/ledBar.o
+                0x00000000000006f4                pressed
 
-.text.ledInc    0x000000000000070c       0x24
- .text.ledInc   0x000000000000070c       0x24 build/default/production/ledBar.o
-                0x000000000000070c                ledInc
+.text.ledInc    0x000000000000071a       0x24
+ .text.ledInc   0x000000000000071a       0x24 build/default/production/ledBar.o
+                0x000000000000071a                ledInc
 
 .text.gameReset
-                0x00000000000007f0       0x14
+                0x00000000000007fa       0x14
  .text.gameReset
-                0x00000000000007f0       0x14 build/default/production/ledBar.o
-                0x00000000000007f0                gameReset
+                0x00000000000007fa       0x14 build/default/production/ledBar.o
+                0x00000000000007fa                gameReset
 
-.text.winShot   0x0000000000000804       0x10
- .text.winShot  0x0000000000000804       0x10 build/default/production/ledBar.o
-                0x0000000000000804                winShot
+.text.winShot   0x000000000000080e       0x10
+ .text.winShot  0x000000000000080e       0x10 build/default/production/ledBar.o
+                0x000000000000080e                winShot
 
-.text.won       0x00000000000007a8       0x18
- .text.won      0x00000000000007a8       0x18 build/default/production/ledBar.o
-                0x00000000000007a8                won
+.text.won       0x000000000000079c       0x18
+ .text.won      0x000000000000079c       0x18 build/default/production/ledBar.o
+                0x000000000000079c                won
 
 .text.controlSet
                 0x000000000000047a       0x80
@@ -477,53 +475,59 @@ LOAD data_init
                 0x000000000000047a       0x80 build/default/production/ledBar.o
                 0x000000000000047a                controlSet
 
-.text.gameSet   0x00000000000006aa       0x3c
- .text.gameSet  0x00000000000006aa       0x3c build/default/production/ledBar.o
-                0x00000000000006aa                gameSet
+.text.gameSet   0x00000000000006b8       0x3c
+ .text.gameSet  0x00000000000006b8       0x3c build/default/production/ledBar.o
+                0x00000000000006b8                gameSet
 
-.text.ledTimer  0x0000000000000752       0x1e
+.text.ledTimer  0x0000000000000760       0x1e
  .text.ledTimer
-                0x0000000000000752       0x1e build/default/production/ledBar.o
-                0x0000000000000752                ledTimer
+                0x0000000000000760       0x1e build/default/production/ledBar.o
+                0x0000000000000760                ledTimer
+
+.text.buzzTimerLoad
+                0x000000000000081e        0xe
+ .text.buzzTimerLoad
+                0x000000000000081e        0xe build/default/production/ledBar.o
+                0x000000000000081e                buzzTimerLoad
 
 .text.buzzTimer
-                0x000000000000078e       0x1a
+                0x00000000000007e4       0x16
  .text.buzzTimer
-                0x000000000000078e       0x1a build/default/production/ledBar.o
-                0x000000000000078e                buzzTimer
+                0x00000000000007e4       0x16 build/default/production/ledBar.o
+                0x00000000000007e4                buzzTimer
 
 .text.setup     0x0000000000000566       0x60
  .text.setup    0x0000000000000566       0x60 build/default/production/ledBar.o
                 0x0000000000000566                setup
 
 .text.habiliter
-                0x0000000000000770       0x1e
+                0x000000000000077e       0x1e
  .text.habiliter
-                0x0000000000000770       0x1e build/default/production/ledBar.o
-                0x0000000000000770                habiliter
+                0x000000000000077e       0x1e build/default/production/ledBar.o
+                0x000000000000077e                habiliter
 
-.text.charger   0x0000000000000814        0xa
- .text.charger  0x0000000000000814        0xa build/default/production/ledBar.o
-                0x0000000000000814                charger
+.text.charger   0x000000000000082c        0xa
+ .text.charger  0x000000000000082c        0xa build/default/production/ledBar.o
+                0x000000000000082c                charger
 
 .text.chargerInst
-                0x00000000000007c0       0x18
+                0x00000000000007b4       0x18
  .text.chargerInst
-                0x00000000000007c0       0x18 build/default/production/ledBar.o
-                0x00000000000007c0                chargerInst
+                0x00000000000007b4       0x18 build/default/production/ledBar.o
+                0x00000000000007b4                chargerInst
 
-.text.chargerD  0x000000000000081e        0xa
+.text.chargerD  0x0000000000000836        0xa
  .text.chargerD
-                0x000000000000081e        0xa build/default/production/ledBar.o
-                0x000000000000081e                chargerD
+                0x0000000000000836        0xa build/default/production/ledBar.o
+                0x0000000000000836                chargerD
 
 .text.lcdEcrire
-                0x00000000000007d8       0x18
+                0x00000000000007cc       0x18
  .text.lcdEcrire
-                0x00000000000007d8       0x18 build/default/production/ledBar.o
-                0x00000000000007d8                lcdEcrire
+                0x00000000000007cc       0x18 build/default/production/ledBar.o
+                0x00000000000007cc                lcdEcrire
 
-.rodata         0x000000000080010d        0x6 load address 0x000000000000082c
+.rodata         0x000000000080010d        0x6 load address 0x0000000000000844
  .rodata        0x000000000080010d        0x6 build/default/production/ledBar.o
 
 .text.lcdInitialiser4
@@ -532,19 +536,19 @@ LOAD data_init
                 0x00000000000004fa       0x6c build/default/production/ledBar.o
                 0x00000000000004fa                lcdInitialiser4
 
-.text.lcdPrint  0x0000000000000668       0x42
+.text.lcdPrint  0x0000000000000676       0x42
  .text.lcdPrint
-                0x0000000000000668       0x42 build/default/production/ledBar.o
-                0x0000000000000668                lcdPrint
+                0x0000000000000676       0x42 build/default/production/ledBar.o
+                0x0000000000000676                lcdPrint
 
 .progmemx.data  0x00000000000000c8       0x84
  .progmemx.data
                 0x00000000000000c8       0x84 build/default/production/ledBar.o
 
-.text.lcdClear  0x0000000000000730       0x22
+.text.lcdClear  0x000000000000073e       0x22
  .text.lcdClear
-                0x0000000000000730       0x22 build/default/production/ledBar.o
-                0x0000000000000730                lcdClear
+                0x000000000000073e       0x22 build/default/production/ledBar.o
+                0x000000000000073e                lcdClear
 
 .text.rScreen   0x00000000000002a0      0x130
  .text.rScreen  0x00000000000002a0      0x130 build/default/production/ledBar.o
@@ -568,6 +572,6 @@ LOAD data_init
                 0x00000000000005c6       0x5e build/default/production/ledBar.o
                 0x00000000000005c6                __vector_5
 
-.text.main      0x0000000000000624       0x44
- .text.main     0x0000000000000624       0x44 build/default/production/ledBar.o
+.text.main      0x0000000000000624       0x52
+ .text.main     0x0000000000000624       0x52 build/default/production/ledBar.o
                 0x0000000000000624                main
