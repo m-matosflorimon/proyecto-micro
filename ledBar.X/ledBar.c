@@ -495,8 +495,9 @@ void ledTimer()
 // Timer2
 void buzzTimerLoad(int timerVal)
 {
-    OCR2A = timerVal+1;
+    OCR2A = timerVal;
     OCR2B = timerVal;
+    TCCR2B = (0 << WGM22) | (0 << CS22) | (0 << CS21) | (1 << CS20);
 }
 
 // Setea el timer para el buzzer
